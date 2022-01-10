@@ -11,10 +11,7 @@ jobs:
     name: Code quality
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/rene-bos/iw-ghdw-php:8.1-latest
-      credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      image: ghcr.io/rene-bos/iw-ghdw-php:8.1-ci-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
