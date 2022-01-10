@@ -1,0 +1,32 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+      - release-*
+  pull_request: ~
+
+jobs:
+  code-quality:
+    name: Code quality
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/rene-bos/iw-ghdw-php:8.1-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: composer install --no-ansi --no-interaction --optimize-autoloader
+
+      - name: Check code style
+        run: composer run-script phpcs
+
+      - name: Check PHP compatibility
+        run: composer run-script phpcompatibility
+
+      - name: Run static code analyses
+        run: composer run-script phpstan
+
+      - name: Execute unit tests
+        run: composer run-script phpunit
