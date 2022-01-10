@@ -20,13 +20,17 @@ jobs:
         run: composer install --no-ansi --no-interaction --optimize-autoloader
 
       - name: Check code style
+        continue-on-error: true
         run: composer run-script phpcs
 
       - name: Check PHP compatibility
+        continue-on-error: true
         run: composer run-script phpcompatibility
 
       - name: Run static code analyses
+        continue-on-error: true
         run: composer run-script phpstan
 
       - name: Execute unit tests
+        continue-on-error: true
         run: composer run-script phpunit
