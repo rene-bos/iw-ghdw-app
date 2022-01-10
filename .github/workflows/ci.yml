@@ -50,7 +50,7 @@ jobs:
         run: composer install --no-interaction --optimize-autoloader
 
       - name: Run static code analysis
-        run: composer run-script phpstan -- --error-format=github
+        run: composer run-script phpstan
 
   unit-tests:
     name: Unit tests
