@@ -22,7 +22,7 @@ jobs:
   source-build:
     name: Build
     # TODO Change back to `main` branch after testing.
-    needs: ci
+    # needs: ci
     runs-on: ubuntu-latest
     permissions:
       contents: read
