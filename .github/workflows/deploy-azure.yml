@@ -46,7 +46,8 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: iw-ghdw-app
-          configuration-file: docker-compose.deploy.yaml
+#        uses: azure/webapps-deploy@v2
+#        with:
+#          app-name: iw-ghdw-app
+#          configuration-file: docker-compose.deploy.yaml
+        run: az webapp config container set --resource-group iw-ghdw --name iw-ghdw-app --multicontainer-config-type compose --multicontainer-config-file docker-compose.deploy.yaml
