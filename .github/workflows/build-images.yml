@@ -32,12 +32,15 @@ jobs:
 
       - name: Install PHP dependencies
         run: composer install --no-dev --no-interaction --optimize-autoloader
-      
+
+      - name: Zip build artifact
+        run: zip -r build-source.zip ./*
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
           name: build-source
-          path: .
+          path: build-source.zip
           retention-days: 7
 
   build-and-push-php:
@@ -51,10 +54,13 @@ jobs:
       IMAGE_NAME: rene-bos/iw-ghdw-app-php
       IMAGE_TITLE: IW GHDW App | PHP
     steps:
-      - name: Download source build
+      - name: Download build source
         uses: actions/download-artifact@v2
         with:
           name: build-source
+          
+      - name: Unzip build source artifact
+        run: unzip build-source.zip -d .
 
       - name: Log in to container registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -95,10 +101,13 @@ jobs:
       IMAGE_NAME: rene-bos/iw-ghdw-app-web
       IMAGE_TITLE: IW GHDW App | Web
     steps:
-      - name: Download source build
+      - name: Download build source
         uses: actions/download-artifact@v2
         with:
           name: build-source
+          
+      - name: Unzip build source artifact
+        run: unzip build-source.zip -d .
 
       - name: Log in to container registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
