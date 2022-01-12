@@ -24,12 +24,12 @@ jobs:
           
             services:
               php:
-                image: ghcr.io/rene-bos/iw-ghdw-app-php:sha-${{ github.sha }}
+                image: ghcr.io/rene-bos/iw-ghdw-app-php:sha-${GITHUB_SHA::7}
                 environment:
                   APP_ENV: prod
           
               web:
-                image: ghcr.io/rene-bos/iw-ghdw-app-web::sha-${{ github.sha }}
+                image: ghcr.io/rene-bos/iw-ghdw-app-web::sha-${GITHUB_SHA::7}
                 ports:
                   - "8000:80"
           EOF
@@ -41,5 +41,5 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'iw-ghdw-app'
+          app-name: iw-ghdw-app
           configuration-file: docker-compose.deploy.yaml
