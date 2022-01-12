@@ -2,12 +2,56 @@ name: Deploy Azure
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: [ "Build Docker images" ]
+    types: [ completed ]
 
 jobs:
   deploy:
     name: Deploy
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Print "It Works"
-        run: echo "It works"
+      - name: Login to Azure
+#        uses: azure/login@v1
+#        with:
+#          creds: ${{ secrets.AZURE_APP_CREDENTIALS }}
+        run: az login --service-principal -u "${{ secrets.AZURE_CLIENT_ID }}" -p "${{ secrets.AZURE_CLIENT_SECRET }}" --tenant "${{ secrets.AZURE_TENANT_ID }}"
+
+      - name: Debug Azure connection (Account)
+        run: az account show
+
+      - name: Debug Azure connection (Web Apps)
+        run: az webapp list
+
+      - name: Create Docker Compose configuration
+        run: |
+          cat <<EOF > docker-compose.deploy.yaml
+            version: "3.7"
+          
+            services:
+              php:
+                image: ghcr.io/rene-bos/iw-ghdw-app-php:sha-${GITHUB_SHA::7}
+                environment:
+                  APP_ENV: prod
+          
+              web:
+                image: ghcr.io/rene-bos/iw-ghdw-app-web::sha-${GITHUB_SHA::7}
+                ports:
+                  - "8000:80"
+          EOF
+
+      - name: View Docker Compose configuration
+        run: cat docker-compose.deploy.yaml
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+#        uses: azure/webapps-deploy@v2
+#        with:
+#          app-name: iw-ghdw-app
+#          configuration-file: docker-compose.deploy.yaml
+        run: az webapp config container set --resource-group iw-ghdw --name iw-ghdw-app --multicontainer-config-type compose --multicontainer-config-file docker-compose.deploy.yaml
