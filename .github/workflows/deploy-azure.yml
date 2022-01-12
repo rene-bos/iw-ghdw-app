@@ -1,0 +1,13 @@
+name: Deploy Azure
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print "It Works"
+        run: echo "It works"
