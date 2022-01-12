@@ -7,7 +7,39 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Print "It Works"
-        run: echo "It works"
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_APP_CREDENTIALS }}
+
+      - name: Create Docker Compose configuration
+        run: |
+          cat <<EOF > ./infrastructure/temp/docker-compose.yaml
+            version: "3.7"
+            
+            services:
+              php:
+                image: ghcr.io/rene-bos/iw-ghdw-app-php:sha-${{ github.sha }}
+                environment:
+                  APP_ENV: prod
+            
+              web:
+                image: ghcr.io/rene-bos/iw-ghdw-app-web::sha-${{ github.sha }}
+                ports:
+                  - "8000:80"
+          EOF
+
+      - name: View Docker Compose configuration
+        run: cat ./infrastructure/temp/docker-compose.yaml
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'iw-ghdw-app'
+          configuration-file: ./infrastructure/temp/docker-compose.yaml
