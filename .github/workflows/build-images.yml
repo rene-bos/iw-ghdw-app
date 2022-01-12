@@ -1,0 +1,103 @@
+name: Build Docker images
+
+on:
+  push:
+    branches:
+      - main
+      - release-*
+      # TODO Only added for testing, should be removed before merging this branch
+      - build-docker-images
+    tags:
+      - v*
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  ci:
+    name: CI
+    uses: rene-bos/iw-ghdw-app/.github/workflows/ci.yml@main
+
+  build-and-push-php:
+    name: Build & push PHP
+    needs: ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      IMAGE_NAME: rene-bos/iw-ghdw-app-php
+      IMAGE_TITLE: IW GHDW App | PHP
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta-php
+        uses: docker/metadata-action@v3.6.2
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            latest=auto
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
+            type=edge,branch=main
+          labels: |
+            - org.opencontainers.image.title=${{ env.IMAGE_TITLE }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2.7.0
+        with:
+          file: ./infrastructure/docker/php/Dockerfile
+          context: .
+          push: true
+          tags: ${{ steps.meta-php.outputs.tags }}
+          labels: ${{ steps.meta-php.outputs.labels }}
+
+  build-and-push-web:
+    name: Build & push web
+    needs: ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      IMAGE_NAME: rene-bos/iw-ghdw-app-web
+      IMAGE_TITLE: IW GHDW App | Web
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta-web
+        uses: docker/metadata-action@v3.6.2
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: |
+            latest=auto
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
+            type=edge,branch=main
+          labels: |
+            - org.opencontainers.image.title=${{ env.IMAGE_TITLE }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2.7.0
+        with:
+          file: ./infrastructure/docker/web/Dockerfile
+          context: .
+          push: true
+          tags: ${{ steps.meta-web.outputs.tags }}
+          labels: ${{ steps.meta-web.outputs.labels }}
