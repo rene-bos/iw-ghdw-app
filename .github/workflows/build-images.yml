@@ -19,9 +19,32 @@ jobs:
     # TODO Change back to `main` branch after testing.
     uses: rene-bos/iw-ghdw-app/.github/workflows/ci.yml@build-docker-images
 
-  build-and-push-php:
-    name: Build & push PHP
+  source-build:
+    name: Build
+    # TODO Change back to `main` branch after testing.
     needs: ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install PHP dependencies
+        uses: ghcr.io/rene-bos/iw-ghdw-php:8.1-ci-latest
+        with:
+          args: composer install --no-dev --no-interaction --optimize-autoloader
+      
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: source-build
+          path: .
+          retention-days: 7
+
+  build-and-push-php:
+    name: Build & push PHP image
+    needs: source-build
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,8 +53,10 @@ jobs:
       IMAGE_NAME: rene-bos/iw-ghdw-app-php
       IMAGE_TITLE: IW GHDW App | PHP
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Download source build
+        uses: actions/download-artifact@v2
+        with:
+          name: source-build
 
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -62,8 +87,8 @@ jobs:
           labels: ${{ steps.meta-php.outputs.labels }}
 
   build-and-push-web:
-    name: Build & push web
-    needs: ci
+    name: Build & push web image
+    needs: source-build
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -72,8 +97,10 @@ jobs:
       IMAGE_NAME: rene-bos/iw-ghdw-app-web
       IMAGE_TITLE: IW GHDW App | Web
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Download source build
+        uses: actions/download-artifact@v2
+        with:
+          name: source-build
 
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
