@@ -2,10 +2,14 @@ name: Deploy Azure
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: [ "Build Docker images" ]
+    types: [ completed ]
 
 jobs:
   deploy:
     name: Deploy
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     environment:
       name: 'production'
