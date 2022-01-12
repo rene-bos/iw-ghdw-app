@@ -21,12 +21,9 @@ jobs:
 
   build-source:
     name: Build source
-    # TODO Change back to `main` branch after testing.
+    # TODO Enable after testing finished
     # needs: ci
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
