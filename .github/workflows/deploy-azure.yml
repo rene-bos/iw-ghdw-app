@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
     name: Deploy
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     environment:
       name: 'production'
@@ -40,7 +40,7 @@ jobs:
                   APP_ENV: prod
           
               web:
-                image: ghcr.io/rene-bos/iw-ghdw-app-web::sha-${GITHUB_SHA::7}
+                image: ghcr.io/rene-bos/iw-ghdw-app-web:sha-${GITHUB_SHA::7}
                 ports:
                   - "8000:80"
           EOF
