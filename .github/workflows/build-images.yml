@@ -60,7 +60,9 @@ jobs:
           name: build-source
           
       - name: Unzip build source artifact
-        run: unzip build-source.zip -d .
+        run: |
+          unzip build-source.zip -d .
+          rm build-source.zip
 
       - name: Log in to container registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -107,7 +109,9 @@ jobs:
           name: build-source
           
       - name: Unzip build source artifact
-        run: unzip build-source.zip -d .
+        run: |
+          unzip build-source.zip -d .
+          rm build-source.zip
 
       - name: Log in to container registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
