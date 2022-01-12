@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  php:
+    build:
+      context: ./../..
+      dockerfile: ./infrastructure/docker/php/Dockerfile
+
+  web:
+    build:
+      context: ./../..
+      dockerfile: ./infrastructure/docker/web/Dockerfile
+    ports:
+      - "6002:80"
