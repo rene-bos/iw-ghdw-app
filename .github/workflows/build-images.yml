@@ -19,13 +19,14 @@ jobs:
     # TODO Change back to `main` branch after testing.
     uses: rene-bos/iw-ghdw-app/.github/workflows/ci.yml@build-docker-images
 
-  source-build:
-    name: Build
+  build-source:
+    name: Build source
     # TODO Change back to `main` branch after testing.
     # needs: ci
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -41,13 +42,13 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v2
         with:
-          name: source-build
+          name: build-source
           path: .
           retention-days: 7
 
   build-and-push-php:
     name: Build & push PHP image
-    needs: source-build
+    needs: build-source
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -59,7 +60,7 @@ jobs:
       - name: Download source build
         uses: actions/download-artifact@v2
         with:
-          name: source-build
+          name: build-source
 
       - name: Log in to container registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -91,7 +92,7 @@ jobs:
 
   build-and-push-web:
     name: Build & push web image
-    needs: source-build
+    needs: build-source
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -103,7 +104,7 @@ jobs:
       - name: Download source build
         uses: actions/download-artifact@v2
         with:
-          name: source-build
+          name: build-source
 
       - name: Log in to container registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
