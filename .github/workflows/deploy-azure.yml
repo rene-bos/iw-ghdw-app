@@ -16,6 +16,9 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_APP_CREDENTIALS }}
+          
+      - name: Debug Azure connection
+        run: az webapp list --resource-group "iw-ghdw"
 
       - name: Create Docker Compose configuration
         run: |
