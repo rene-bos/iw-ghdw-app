@@ -14,10 +14,10 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  ci:
-    name: CI
-    # TODO Change back to `main` branch after testing.
-    uses: rene-bos/iw-ghdw-app/.github/workflows/ci.yml@build-docker-images
+#  ci:
+#    name: CI
+#    # TODO Change back to `main` branch after testing.
+#    uses: rene-bos/iw-ghdw-app/.github/workflows/ci.yml@build-docker-images
 
   build-source:
     name: Build source
