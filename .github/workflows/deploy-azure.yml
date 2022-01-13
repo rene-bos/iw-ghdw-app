@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: 'production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      url: 'https://iw-ghdw-app.azurewebsites.net'
 
     steps:
       - name: Login to Azure
