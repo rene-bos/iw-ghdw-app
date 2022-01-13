@@ -16,15 +16,4 @@ final class HelloWorldController
             '<html><body>Hello, world!</body></html>'
         );
     }
-
-    #[Route('/hello/{name}')]
-    public function helloName(string $name): Response
-    {
-        return new Response(
-            sprintf(
-                '<html><body>Hello, %s</body></html>',
-                $name
-            )
-        );
-    }
 }
