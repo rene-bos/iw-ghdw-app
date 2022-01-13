@@ -13,7 +13,7 @@ final class HelloWorldController
     public function helloWorld(): Response
     {
         return new Response(
-            '<html><body>Hello, René!</body></html>'
+            '<html><body>Hallo, wereld!</body></html>'
         );
     }
 }
