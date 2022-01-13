@@ -17,8 +17,8 @@ final class HelloWorldController
         );
     }
 
-    #[Route('/hello-world/{name}')]
-    public function helloWorldWithName(string $name): Response
+    #[Route('/hello/{name}')]
+    public function helloName(string $name): Response
     {
         return new Response(
             sprintf(
