@@ -24,7 +24,7 @@ final class HelloWorldController
             sprintf(
                 '<html><body>Hello, %s</body></html>',
                 $name,
-            );                
+            )
         );
     }
 }
