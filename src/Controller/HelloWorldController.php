@@ -16,7 +16,7 @@ final class HelloWorldController
             '<html><body>Hallo meneer.</body></html>'
         );
     }
-    
+
     #[Route('/hello-world/{name}')]
     public function helloWorldWithName(string $name): Response
     {
