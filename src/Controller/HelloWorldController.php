@@ -16,4 +16,15 @@ final class HelloWorldController
             '<html><body>Hallo meneer.</body></html>'
         );
     }
+
+    #[Route('/hello-world/{name}')]
+    public function helloWorldWithName(string $name): Response
+    {
+        return new Response(
+            sprintf(
+                '<html><body>Hello, %s</body></html>',
+                $name,
+            )
+        );
+    }
 }
