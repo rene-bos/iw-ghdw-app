@@ -19,10 +19,11 @@ final class HelloWorldController
 
     #[Route('/hello/{name}')]
     public function helloName(string $name): Response {
+        ereg_replace('(.*)', '$1', $name);
+
         return new Response(
             sprintf(
                 '<html><body>Hello, %s</body></html>',
-                $name
             )
         );
     }
