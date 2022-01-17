@@ -66,6 +66,7 @@ jobs:
         
   all-green:
     name: All green
+    if: always()
     needs:
       - code-style
       - php-compatibility
