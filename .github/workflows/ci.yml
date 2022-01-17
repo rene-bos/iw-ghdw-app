@@ -68,7 +68,7 @@ jobs:
         run: composer install --no-interaction --optimize-autoloader
 
       - name: Setup problem matcher for PHPUnit
-        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+        uses: decnorton/phpunit-problem-matcher@master
 
       - name: Execute unit tests
         run: composer run-script phpunit
