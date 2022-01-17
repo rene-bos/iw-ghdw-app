@@ -23,7 +23,7 @@ jobs:
       - run: echo "::add-matcher::.github/matchers/phpcs-problem-matcher.json"
 
       - name: Check code style
-        run: composer run-script phpcs
+        run: composer run-script phpcs -- --report=emacs
 
   php-compatibility:
     name: PHP compatibility
@@ -44,7 +44,7 @@ jobs:
       - run: echo "::add-matcher::.github/matchers/phpcs-problem-matcher.json"
         
       - name: Check PHP compatibility
-        run: composer run-script phpcompatibility
+        run: composer run-script phpcompatibility -- --report=emacs
 
   static-code-analysis:
     name: Static code analysis
