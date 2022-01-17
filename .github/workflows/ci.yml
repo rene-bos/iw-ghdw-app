@@ -15,7 +15,7 @@ jobs:
           tools: cs2pr
 
       - name: Checkout repository
-        uses: actions/checkout@v2     
+        uses: actions/checkout@v2
 
       - name: Install dependencies
         run: composer install --no-interaction --optimize-autoloader
@@ -36,7 +36,7 @@ jobs:
           tools: cs2pr
 
       - name: Checkout repository
-        uses: actions/checkout@v2       
+        uses: actions/checkout@v2
 
       - name: Install dependencies
         run: composer install --no-interaction --optimize-autoloader
