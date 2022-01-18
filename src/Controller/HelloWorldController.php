@@ -22,7 +22,7 @@ final class HelloWorldController
     {
         return new Response(
             sprintf(
-                '<html><body>Hello, %s</body></html>',
+                '<html><body>Hallo, %s</body></html>',
                 $name
             )
         );
