@@ -16,8 +16,11 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --optimize-autoloader
 
+      - name: Setup problem matcher for phpcs
+        run: echo "::add-matcher::.github/matchers/phpcs-problem-matcher.json"
+
       - name: Check code style
-        run: composer run-script phpcs
+        run: composer run-script phpcs -- --report=emacs
 
   php-compatibility:
     name: PHP compatibility
@@ -30,9 +33,12 @@ jobs:
 
       - name: Install dependencies
         run: composer install --no-interaction --optimize-autoloader
+
+      - name: Setup problem matcher for phpcs
+        run: echo "::add-matcher::.github/matchers/phpcs-problem-matcher.json"
         
       - name: Check PHP compatibility
-        run: composer run-script phpcompatibility
+        run: composer run-script phpcompatibility -- --report=emacs
 
   static-code-analysis:
     name: Static code analysis
@@ -60,6 +66,9 @@ jobs:
 
       - name: Install dependencies
         run: composer install --no-interaction --optimize-autoloader
+
+      - name: Setup problem matcher for PHPUnit
+        run: echo "::add-matcher::.github/matchers/phpunit-problem-matcher.json"
 
       - name: Execute unit tests
         run: composer run-script phpunit
