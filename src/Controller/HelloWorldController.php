@@ -13,7 +13,7 @@ final class HelloWorldController
     public function helloWorld(): Response
     {
         return new Response(
-            '<html><body>Hello, world!</body></html>'
+            '<html><body>Hello, World!</body></html>'
         );
     }
 
@@ -22,7 +22,7 @@ final class HelloWorldController
     {
         return new Response(
             sprintf(
-                '<html><body>Hello, %s</body></html>',
+                '<html><body>Hallo, %s</body></html>',
                 $name
             )
         );
