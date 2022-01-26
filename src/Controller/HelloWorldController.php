@@ -13,17 +13,17 @@ final class HelloWorldController
     public function helloWorld(): Response
     {
         return new Response(
-            '<html><body>Hello, world!</body></html>'
+            '<html><body>Hello, World!</body></html>'
         );
     }
 
     #[Route('/hello/{name}')]
-    public function helloName(string $name): Response {
-        ereg_replace('(.*)', '$1', $name);
-
+    public function helloName(string $name): Response
+    {
         return new Response(
             sprintf(
-                '<html><body>Hello, %s</body></html>',
+                '<html><body>Hallo, %s</body></html>',
+                $name
             )
         );
     }
