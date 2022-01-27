@@ -14,7 +14,7 @@ env:
 jobs:
   ci:
     name: CI
-    uses: rene-bos/iw-ghdw-app/.github/workflows/ci.yml
+    uses: ./.github/workflows/ci.yml
 
   build-source:
     name: Build source
