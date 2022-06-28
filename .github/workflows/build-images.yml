@@ -51,7 +51,7 @@ jobs:
       IMAGE_TITLE: IW GHDW App | PHP
     steps:
       - name: Download build source
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: build-source
           
@@ -100,7 +100,7 @@ jobs:
       IMAGE_TITLE: IW GHDW App | Web
     steps:
       - name: Download build source
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: build-source
           
