@@ -33,7 +33,7 @@ jobs:
         run: zip -r build-source.zip .
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-source
           path: build-source.zip
