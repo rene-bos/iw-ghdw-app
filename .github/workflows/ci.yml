@@ -79,7 +79,7 @@ jobs:
     needs:
       - code-style
       - php-compatibility
-      - static-code-analysis
+#      - static-code-analysis
       - unit-tests
     runs-on: ubuntu-latest
     steps:
