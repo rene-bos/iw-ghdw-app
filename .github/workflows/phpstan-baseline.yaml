@@ -1,0 +1,32 @@
+name: PHPStan baseline updater
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-baseline:
+    name: Update baseline
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: composer install --no-interaction --optimize-autoloader
+
+      - name: Generate baseline
+        run: composer run-script phpstan -- --generate-baseline
+
+      - name: Create pull request if baseline has been changes
+        uses: peter-evans/create-pull-request@923ad837f191474af6b1721408744feb989a4c27 # v4.0.4
+        with:
+          add-paths: ./phpstan-baseline.yaml
+          commit-message: Automated update of PHPStan baseline
+          branch: automated-phpstan-baseline-update
+          title: Automated update of PHPStan baseline
+          body: |
+            The automated update of the baseline is only needed because the PHPStan check is not (yet) required for a
+            pull request. Once the check is required we can remove this automated update.
+          reviewers: |
+            rene-bos
