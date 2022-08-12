@@ -6,6 +6,7 @@ on:
 jobs:
   code-style:
     name: Code style
+    if: ${{ false }}
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/rene-bos/iw-ghdw-php:8.1-ci-latest
@@ -24,6 +25,7 @@ jobs:
 
   php-compatibility:
     name: PHP compatibility
+    if: ${{ false }}
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/rene-bos/iw-ghdw-php:8.1-ci-latest
@@ -57,6 +59,7 @@ jobs:
 
   unit-tests:
     name: Unit tests
+    if: ${{ false }}
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/rene-bos/iw-ghdw-php:8.1-ci-latest
@@ -72,15 +75,25 @@ jobs:
 
       - name: Execute unit tests
         run: composer run-script phpunit
-        
+
+  # This dummy job is required because the `passes-all-required-checks` job needs at least one dependent job.
+  # This job may be removed when we have at least one real check.
+  successful-dummy:
+    name: Successful dummy
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Step which always succeeds
+        run: echo "I am a dummy step which always succeeds"
+
   all-green:
     name: All green
     if: always()
     needs:
-      - code-style
-      - php-compatibility
+#      - code-style
+#      - php-compatibility
 #      - static-code-analysis
-      - unit-tests
+#      - unit-tests
+      - successful-dummy
     runs-on: ubuntu-latest
     steps:
     - name: Decide whether the needed jobs succeeded or failed
