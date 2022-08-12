@@ -1,3 +1,8 @@
+# This workflow automatically updates the PHPStan baseline if our `main` branch has errors.
+# The automated update of the baseline is only needed because the PHPStan check is not (yet) required for a
+# pull request. Once the check is required we can remove this workflow as no errors can be merged to the main branch
+# anymore.
+
 name: PHPStan baseline updater
 on:
   push:
@@ -32,8 +37,9 @@ jobs:
           branch: automated-phpstan-baseline-update
           title: Automated update of PHPStan baseline
           body: |
-            The automated update of the baseline is only needed because the PHPStan check is not (yet) required for a
-            pull request. Once the check is required we can remove this automated update.
+            The automated update of the PHPStan baseline is only needed because the PHPStan check is not (yet) required 
+            for a pull request. Once the check is required we can remove this automated update as no errors can be 
+            merged to the main branch anymore.
           reviewers: |
             rene-bos
       - name: Show created pull request (if any)
