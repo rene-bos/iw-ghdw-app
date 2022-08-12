@@ -24,6 +24,7 @@ jobs:
         run: composer run-script phpstan -- --generate-baseline
 
       - name: Create pull request if baseline has been changes
+        id: create-pull-request
         uses: peter-evans/create-pull-request@923ad837f191474af6b1721408744feb989a4c27 # v4.0.4
         with:
           add-paths: ./phpstan-baseline.yaml
@@ -35,3 +36,8 @@ jobs:
             pull request. Once the check is required we can remove this automated update.
           reviewers: |
             rene-bos
+      - name: Show created pull request (if any)
+        if: ${{ steps.create-pull-request.outputs.pull-request-number }}
+        run: |
+          echo "Pull request number: ${{ steps.create-pull-request.outputs.pull-request-number }}"
+          echo "Pull request URL: ${{ steps.create-pull-request.outputs.pull-request-url }}"
