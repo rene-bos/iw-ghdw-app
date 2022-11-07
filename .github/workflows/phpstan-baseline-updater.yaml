@@ -30,7 +30,7 @@ jobs:
 
       - name: Create pull request if baseline has been changes
         id: create-pull-request
-        uses: peter-evans/create-pull-request@6c704eb7a8ba1daa13da0dcea9bb93a4fe530275 # v4.0.4
+        uses: peter-evans/create-pull-request@923ad837f191474af6b1721408744feb989a4c27 # v4.0.4
         with:
           add-paths: ./phpstan-baseline.neon
           commit-message: Automated update of PHPStan baseline
