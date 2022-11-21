@@ -12,10 +12,6 @@ final class HelloWorldController
     #[Route('/hello-world')]
     public function helloWorld(): Response
     {
-        if (true) {
-            return null;
-        }
-
         return new Response(
             '<html><body>Hello, World!</body></html>'
         );
