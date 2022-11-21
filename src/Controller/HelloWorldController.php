@@ -12,10 +12,6 @@ final class HelloWorldController
     #[Route('/hello-world')]
     public function helloWorld(): Response
     {
-        if (true) {
-            return null;
-        }
-        
         return new Response(
             '<html><body>Hello, World!</body></html>'
         );
@@ -26,7 +22,7 @@ final class HelloWorldController
     {
         return new Response(
             sprintf(
-                '<html><body>Hallo, %s, %s</body></html>',
+                '<html><body>Hallo, %s</body></html>',
                 $name
             )
         );
