@@ -6,7 +6,6 @@ on:
 jobs:
   code-style:
     name: Code style
-    if: ${{ false }}
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/rene-bos/iw-ghdw-php:8.1-ci-latest
@@ -25,7 +24,6 @@ jobs:
 
   php-compatibility:
     name: PHP compatibility
-    if: ${{ false }}
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/rene-bos/iw-ghdw-php:8.1-ci-latest
@@ -59,7 +57,6 @@ jobs:
 
   unit-tests:
     name: Unit tests
-    if: ${{ false }}
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/rene-bos/iw-ghdw-php:8.1-ci-latest
