@@ -15,7 +15,7 @@ final class HelloWorldController
         if (true) {
             return null;
         }
-        
+
         return new Response(
             '<html><body>Hello, World!</body></html>'
         );
