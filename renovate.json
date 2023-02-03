@@ -10,5 +10,6 @@
       ],
       "rangeStrategy": "replace"
     }
-  ]
+  ],
+  "rebaseWhen": "behind-base-branch"
 }
