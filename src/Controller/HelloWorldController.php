@@ -4,16 +4,24 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class HelloWorldController
+final class HelloWorldController extends AbstractController
 {
+    public function __construct(readonly string $helloSuffix)
+    {
+    }
+
     #[Route('/hello-world')]
     public function helloWorld(): Response
     {
         return new Response(
-            '<html><body>Hello, World!</body></html>'
+            sprintf(
+                '<html><body>Hello, world%s</body></html>',
+                $this->helloSuffix
+            )
         );
     }
 
@@ -22,7 +30,7 @@ final class HelloWorldController
     {
         return new Response(
             sprintf(
-                '<html><body>Hallo, %s, %s</body></html>',
+                '<html><body>Hello, %s</body></html>',
                 $name
             )
         );
