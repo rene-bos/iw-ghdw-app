@@ -1,0 +1,36 @@
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      containers:
+        - name: php
+          image: localhost:32000/iw-ghdw-app-php:{{ required "Value `imageTag` is required." .Values.imageTag }}
+          envFrom:
+            - configMapRef:
+                name: "{{ .Values.name }}-config"
+        - name: web
+          image: localhost:32000/iw-ghdw-app-web:{{ required "Value `imageTag` is required." .Values.imageTag }}
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /hello-world
+              port: 80
+          readinessProbe:
+            httpGet:
+              path: /hello-world
+              port: 80
