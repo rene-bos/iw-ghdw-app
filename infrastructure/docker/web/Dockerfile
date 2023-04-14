@@ -1,6 +1,6 @@
 FROM nginx:1.21.4-alpine
 
-COPY ./nginx/base/default.conf.template /etc/nginx/templates/
+COPY ./infrastructure/docker/web/default.conf.template /etc/nginx/templates/
 
 WORKDIR /app
 
