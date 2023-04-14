@@ -6,4 +6,4 @@ metadata:
     app: {{ .Values.name }}
 data:
   APP_ENV: "prod"
-  HELLO_SUFFIX: "..."
+  HELLO_SUFFIX: "!"
