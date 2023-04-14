@@ -1,20 +1,18 @@
-name: Deploy
-on:
+name: deploy
+"on":
     push:
         branches:
             - kubernetes
     workflow_dispatch: {}
-
 env:
     ACR_RESOURCE_GROUP: aks-test
     AZURE_CONTAINER_REGISTRY: reneakstest
+    CHART_OVERRIDE_PATH: ./infrastructure/helm/values.yaml
+    CHART_OVERRIDES: image.repository=reneakstest.azurecr.io/iw-ghdw-app-web,image.tag=${{ github.sha }}
+    CHART_PATH: ./infrastructure/helm
     CLUSTER_NAME: aks-test
     CLUSTER_RESOURCE_GROUP: aks-test
-    CONTAINER_NAME: iw-ghdw-app-php
-    DEPLOYMENT_MANIFEST_PATH: |
-        ./infrastructure/kubernetes/frontend-deployment.yaml
-        ./infrastructure/kubernetes/frontend-service.yaml
-
+    CONTAINER_NAME: iw-ghdw-app-web
 jobs:
     buildImage:
         permissions:
@@ -58,10 +56,5 @@ jobs:
                 cluster-name: ${{ env.CLUSTER_NAME }}
                 resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
                 use-kubelogin: "true"
-            - uses: Azure/k8s-deploy@v4
-              name: Deploys application
-              with:
-                action: deploy
-                images: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
-                manifests: ${{ env.DEPLOYMENT_MANIFEST_PATH }}
-                namespace: iw-ghdw-app
+            - name: Deploy application
+              run: helm upgrade --wait -i -f ${{ env.CHART_OVERRIDE_PATH }} --set ${{ env.CHART_OVERRIDES }} automated-deployment ${{ env.CHART_PATH }}
