@@ -32,14 +32,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Test list
         run: docker images
+      - uses: azure/login@v1.4.3
+        name: Azure login
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
       - name: Test pull
         run: docker pull ghcr.io/rene-bos/iw-ghdw-nginx:symfony-1.0.0
-#      - uses: azure/login@v1.4.3
-#        name: Azure login
-#        with:
-#          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-#          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-#          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
       - name: Build and push image to ACR
         run: az acr build --image ${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./infrastructure/docker/web/Dockerfile ./
   
