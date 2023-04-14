@@ -5,6 +5,7 @@ metadata:
   labels:
     app: {{ .Values.name }}-{{ .Release.Name }}
 spec:
+  type: LoadBalancer
   ports:
     - port: 80
   selector:
