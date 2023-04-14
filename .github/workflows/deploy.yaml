@@ -20,6 +20,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      packages: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
