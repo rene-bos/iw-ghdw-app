@@ -29,6 +29,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Test list
+        run: docker images
       - name: Test pull
         run: docker pull ghcr.io/rene-bos/iw-ghdw-nginx:symfony-1.0.0
       - uses: azure/login@v1.4.3
