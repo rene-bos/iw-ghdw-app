@@ -14,7 +14,7 @@ final class HelloWorldController extends AbstractController
     {
     }
 
-    #[Route('/hello-world')]
+    #[Route('/hello')]
     public function helloWorld(): Response
     {
         return new Response(
