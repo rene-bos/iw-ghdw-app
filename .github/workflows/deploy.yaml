@@ -9,39 +9,28 @@ env:
   ACR_RESOURCE_GROUP: aks-test
   AZURE_CONTAINER_REGISTRY: reneakstest
   CHART_OVERRIDE_PATH: ./infrastructure/helm/values.yaml
-  CHART_OVERRIDES: image.repository=reneakstest.azurecr.io/iw-ghdw-app-web,image.tag=${{ github.sha }}
+  CHART_OVERRIDES: image.repository=reneakstest.azurecr.io/iw-ghdw-app-fat,image.tag=${{ github.sha }}
   CHART_PATH: ./infrastructure/helm
   CLUSTER_NAME: aks-test
   CLUSTER_RESOURCE_GROUP: aks-test
-  CONTAINER_NAME: iw-ghdw-app-web
+  CONTAINER_NAME: iw-ghdw-app-fat
 
 jobs:
   buildImage:
     permissions:
       contents: read
       id-token: write
-      packages: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Log in to the Container registry
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a # v2.1.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Test list
-        run: docker images
       - uses: azure/login@v1.4.3
         name: Azure login
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-      - name: Test pull
-        run: docker pull ghcr.io/rene-bos/iw-ghdw-nginx:symfony-1.0.0
       - name: Build and push image to ACR
-        run: az acr build --image ${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./infrastructure/docker/web/Dockerfile ./
+        run: az acr build --image ${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./infrastructure/docker/web-php/Dockerfile ./
   
   deploy:
     permissions:
