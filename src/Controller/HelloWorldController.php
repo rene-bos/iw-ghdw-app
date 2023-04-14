@@ -30,8 +30,9 @@ final class HelloWorldController extends AbstractController
     {
         return new Response(
             sprintf(
-                '<html><body>Hello, %s</body></html>',
-                $name
+                '<html><body>Hello, %s%s</body></html>',
+                $name,
+                $this->helloSuffix
             )
         );
     }
