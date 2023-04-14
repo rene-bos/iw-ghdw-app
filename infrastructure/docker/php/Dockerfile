@@ -1,4 +1,6 @@
-FROM ghcr.io/rene-bos/iw-ghdw-php:8.1-1.0.0
+FROM php:8.1.9-fpm-alpine3.16
+
+WORKDIR /app
 
 COPY . /app
 

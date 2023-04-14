@@ -9,14 +9,15 @@ env:
   ACR_RESOURCE_GROUP: aks-test
   AZURE_CONTAINER_REGISTRY: reneakstest
   CHART_OVERRIDE_PATH: ./infrastructure/helm/values.yaml
-  CHART_OVERRIDES: image.repository=reneakstest.azurecr.io/iw-ghdw-app-fat,image.tag=${{ github.sha }}
+  CHART_OVERRIDES: image.registry=reneakstest.azurecr.io,image.tag=${{ github.sha }}
   CHART_PATH: ./infrastructure/helm
   CLUSTER_NAME: aks-test
   CLUSTER_RESOURCE_GROUP: aks-test
-  CONTAINER_NAME: iw-ghdw-app-fat
+  CONTAINER_NAME_WEB: iw-ghdw-app-web
+  CONTAINER_NAME_PHP: iw-ghdw-app-php
 
 jobs:
-  buildImage:
+  buildImages:
     permissions:
       contents: read
       id-token: write
@@ -29,8 +30,10 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-      - name: Build and push image to ACR
-        run: az acr build --image ${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./infrastructure/docker/web-php/Dockerfile ./
+      - name: Build and push image to ACR (${{ env.CONTAINER_NAME_WEB }})
+        run: az acr build --image ${{ env.CONTAINER_NAME_WEB }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./infrastructure/docker/web/Dockerfile ./
+      - name: Build and push image to ACR (${{ env.CONTAINER_NAME_PHP }})
+        run: az acr build --image ${{ env.CONTAINER_NAME_PHP }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./infrastructure/docker/php/Dockerfile ./
   
   deploy:
     permissions:
@@ -39,7 +42,7 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     needs:
-      - buildImage
+      - buildImages
     steps:
       - uses: actions/checkout@v3
       - uses: azure/login@v1.4.3

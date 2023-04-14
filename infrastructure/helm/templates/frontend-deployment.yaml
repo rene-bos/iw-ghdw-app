@@ -18,12 +18,12 @@ spec:
     spec:
       containers:
         - name: php
-          image: localhost:32000/iw-ghdw-app-php:{{ required "Value `imageTag` is required." .Values.imageTag }}
+          image: {{ required "Value `image.registry` is required." .Values.image.registry }}/iw-ghdw-app-php:{{ required "Value `image.tag` is required." .Values.image.tag }}
           envFrom:
             - configMapRef:
                 name: "{{ .Values.name }}-config"
         - name: web
-          image: localhost:32000/iw-ghdw-app-web:{{ required "Value `imageTag` is required." .Values.imageTag }}
+          image: {{ required "Value `image.registry` is required." .Values.image.registry }}/iw-ghdw-app-web:{{ required "Value `image.tag` is required." .Values.image.tag }}
           ports:
             - containerPort: 80
           livenessProbe:
