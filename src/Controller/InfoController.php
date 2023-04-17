@@ -16,7 +16,7 @@ final class InfoController extends AbstractController
     {
         return new Response(
             sprintf(
-                '<html><body>Running on host: %s</body></html>',
+                '<html><body>Host: %s<br>Version: {{VERSION}}</body></html>',
                 gethostname(),
             )
         );
@@ -27,7 +27,7 @@ final class InfoController extends AbstractController
     {
         return new Response(
             sprintf(
-                '<html><body>{{VERSION}}></body></html>',
+                '<html><body>{{VERSION}}</body></html>',
                 gethostname(),
             )
         );
