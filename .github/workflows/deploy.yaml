@@ -55,6 +55,9 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - buildImages
+    environment:
+      name: reviewapps
+      url: http://{${ env.VERSION_NAME }}.review.iw-ghdw-app.local/info
     steps:
       - uses: actions/checkout@v3
       - uses: azure/login@v1.4.3
