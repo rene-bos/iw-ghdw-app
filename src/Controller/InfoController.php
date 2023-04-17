@@ -8,14 +8,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/info')]
 final class InfoController extends AbstractController
 {
-    #[Route('/info')]
+    #[Route('')]
     public function info(): Response
     {
         return new Response(
             sprintf(
                 '<html><body>Running on host: %s</body></html>',
+                gethostname(),
+            )
+        );
+    }
+
+    #[Route('/version')]
+    public function version(): Response
+    {
+        return new Response(
+            sprintf(
+                '<html><body>{{VERSION}}></body></html>',
                 gethostname(),
             )
         );
