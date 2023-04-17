@@ -15,7 +15,7 @@ env:
   CLUSTER_RESOURCE_GROUP: aks-test
   CONTAINER_NAME_WEB: iw-ghdw-app-web
   CONTAINER_NAME_PHP: iw-ghdw-app-php
-  VERSION_NAME: ${ env.GITHUB_REF_NAME }}
+  VERSION_NAME: ${{ vars.github.ref_name }}
 
 jobs:
   buildImages:
