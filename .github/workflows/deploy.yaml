@@ -15,6 +15,7 @@ env:
   CLUSTER_RESOURCE_GROUP: aks-test
   CONTAINER_NAME_WEB: iw-ghdw-app-web
   CONTAINER_NAME_PHP: iw-ghdw-app-php
+  VERSION_NAME: VV-0001
 
 jobs:
   buildImages:
@@ -39,6 +40,8 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      - name: Add version number to source files
+        run: sed -i 's/{{VERSION}}/${{ env.VERSION_NAME}}/' src/Controller/InfoController.php
       - name: Build and push image to ACR (${{ env.CONTAINER_NAME_WEB }})
         run: az acr build --image ${{ env.CONTAINER_NAME_WEB }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./infrastructure/docker/web/Dockerfile ./
       - name: Build and push image to ACR (${{ env.CONTAINER_NAME_PHP }})
@@ -72,4 +75,4 @@ jobs:
           resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
           use-kubelogin: "true"
       - name: Deploy application
-        run: helm upgrade --wait -i -f ${{ env.CHART_OVERRIDE_PATH }} --set ${{ env.CHART_OVERRIDES }} automated-deployment ${{ env.CHART_PATH }}
+        run: helm upgrade --wait -i -f ${{ env.CHART_OVERRIDE_PATH }} --set ${{ env.CHART_OVERRIDES }} ${VERSION_NAME,,} ${{ env.CHART_PATH }}
