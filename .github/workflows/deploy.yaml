@@ -26,7 +26,6 @@ jobs:
     steps:
       - name: Debug
         run: |
-          echo "Env: ${{ GITHUB_REF_NAME }}"
           echo "Var: ${{ github.ref_name  }}"
           echo "Env: ${{ env.VERSION_NAME }}"
           echo "Direct env: ${VERSION_NAME}"
