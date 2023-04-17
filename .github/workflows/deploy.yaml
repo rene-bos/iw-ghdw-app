@@ -24,6 +24,13 @@ jobs:
     environment:
       name: reviewapps
     steps:
+      - name: Debug
+        run: |
+          echo "Env: ${{ env.GITHUB_REF_NAME }}"
+          echo "Var: ${{ vars.github.ref_name  }}"
+          echo "Env: ${{ env.VERSION_NAME }}"
+          echo "Direct env: ${VERSION_NAME}"
+          echo "Modified env: ${VERSION_NAME,,}"
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -41,7 +48,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
       - name: Add version number to source files
-        run: sed -i 's/{{VERSION}}/${{ env.VERSION_NAME}}/' src/Controller/InfoController.php
+        run: sed -i 's/{{VERSION}}/${{ env.GITHUB_REF_NAME}}/' src/Controller/InfoController.php
       - name: Build and push image to ACR (${{ env.CONTAINER_NAME_WEB }})
         run: az acr build --image ${{ env.CONTAINER_NAME_WEB }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./infrastructure/docker/web/Dockerfile ./
       - name: Build and push image to ACR (${{ env.CONTAINER_NAME_PHP }})
@@ -57,7 +64,7 @@ jobs:
       - buildImages
     environment:
       name: reviewapps
-      url: http://{${ env.VERSION_NAME }}.review.iw-ghdw-app.local/info
+      url: http://{${ env.GITHUB_REF_NAME }}.review.iw-ghdw-app.local/info
     steps:
       - uses: actions/checkout@v3
       - uses: azure/login@v1.4.3
@@ -78,4 +85,4 @@ jobs:
           resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
           use-kubelogin: "true"
       - name: Deploy application
-        run: helm upgrade --wait -i -f ${{ env.CHART_OVERRIDE_PATH }} --set ${{ env.CHART_OVERRIDES }} ${VERSION_NAME,,} ${{ env.CHART_PATH }} --create-namespace --namespace reviewapps
+        run: helm upgrade --wait -i  --create-namespace --namespace reviewapps -f ${{ env.CHART_OVERRIDE_PATH }} --set ${{ env.CHART_OVERRIDES }} ${{ env.GITHUB_REF_NAME,,} ${{ env.CHART_PATH }}
