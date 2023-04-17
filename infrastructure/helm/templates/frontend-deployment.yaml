@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.name }}
+  name: {{ .Values.name }}-{{ .Release.Name }}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: {{ .Values.name }}
+      app: {{ .Values.name }}-{{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.name }}
+        app: {{ .Values.name }}-{{ .Release.Name }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/frontend-configmap.yaml") . | sha256sum }}
     spec:
@@ -19,7 +19,7 @@ spec:
           image: {{ required "Value `image.registry` is required." .Values.image.registry }}/iw-ghdw-app-php:{{ required "Value `image.tag` is required." .Values.image.tag }}
           envFrom:
             - configMapRef:
-                name: "{{ .Values.name }}-config"
+                name: "{{ .Values.name }}-{{ .Release.Name }}-config"
         - name: web
           image: {{ required "Value `image.registry` is required." .Values.image.registry }}/iw-ghdw-app-web:{{ required "Value `image.tag` is required." .Values.image.tag }}
           ports:
