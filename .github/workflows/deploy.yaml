@@ -21,6 +21,8 @@ jobs:
     permissions:
       contents: read
     runs-on: ubuntu-latest
+    environment:
+      name: reviewapps
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
