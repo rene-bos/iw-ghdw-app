@@ -85,4 +85,4 @@ jobs:
           resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
           use-kubelogin: "true"
       - name: Deploy application
-        run: helm upgrade --wait -i  --create-namespace --namespace reviewapps -f ${{ env.CHART_OVERRIDE_PATH }} --set ${{ env.CHART_OVERRIDES }} ${{ env.GITHUB_REF_NAME,,} ${{ env.CHART_PATH }}
+        run: helm upgrade --wait -i  --create-namespace --namespace reviewapps -f ${{ env.CHART_OVERRIDE_PATH }} --set ${{ env.CHART_OVERRIDES }} ${{ env.GITHUB_REF_NAME }} ${{ env.CHART_PATH }}
