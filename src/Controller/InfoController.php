@@ -28,7 +28,6 @@ final class InfoController extends AbstractController
         return new Response(
             sprintf(
                 '<html><body>{{VERSION}}</body></html>',
-                gethostname(),
             )
         );
     }
