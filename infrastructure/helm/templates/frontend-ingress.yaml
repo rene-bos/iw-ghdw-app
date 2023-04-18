@@ -15,3 +15,13 @@ spec:
                 name: {{ .Values.name }}-{{ .Release.Name }}
                 port:
                   number: 80
+    - host: {{ .Release.Name }}.review.iw-ghdw-app.rpsoft.nl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.name }}-{{ .Release.Name }}
+                port:
+                  number: 80
