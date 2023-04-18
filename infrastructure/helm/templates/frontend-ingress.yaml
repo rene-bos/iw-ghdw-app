@@ -5,16 +5,6 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: {{ .Release.Name }}.review.{{ .Values.name }}.local
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Values.name }}-{{ .Release.Name }}
-                port:
-                  number: 80
     - host: {{ .Release.Name }}.review.iw-ghdw-app.rpsoft.nl
       http:
         paths:
