@@ -63,7 +63,7 @@ jobs:
       - buildImages
     environment:
       name: reviewapps
-      url: http://${{ env.VERSION_NAME }}.review.iw-ghdw-app.local/info
+      url: http://${{ env.VERSION_NAME }}.review.iw-ghdw-app.rpsoft.nl/info
     steps:
       - uses: actions/checkout@v3
       - uses: azure/login@v1.4.3
