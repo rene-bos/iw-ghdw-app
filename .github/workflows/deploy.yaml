@@ -50,6 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: set-deploy-environment
+        name: Set deploy environment
         run: echo "deploy_environment=${{ env.VERSION_NAME }}" >> $GITHUB_OUTPUT
 
   deploy:
