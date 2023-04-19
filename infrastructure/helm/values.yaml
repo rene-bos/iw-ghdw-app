@@ -1,0 +1,4 @@
+name: iw-ghdw-app
+
+# Required. Should be specified by CLI.
+imageTag: null

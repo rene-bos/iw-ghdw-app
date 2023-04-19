@@ -1,26 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Call to sprintf contains 2 placeholders, 1 value given\\.$#"
-			count: 1
-			path: src/Controller/HelloWorldController.php
-
-		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: src/Controller/HelloWorldController.php
-
-		-
-			message: "#^Method App\\\\Controller\\\\HelloWorldController\\:\\:helloWorld\\(\\) should return Symfony\\\\Component\\\\HttpFoundation\\\\Response but returns null\\.$#"
-			count: 1
-			path: src/Controller/HelloWorldController.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: src/Controller/HelloWorldController.php
-
-		-
 			message: "#^Call to function method_exists\\(\\) with 'Symfony\\\\\\\\Component\\\\\\\\Dotenv\\\\\\\\Dotenv' and 'bootEnv' will always evaluate to true\\.$#"
 			count: 1
 			path: tests/bootstrap.php
