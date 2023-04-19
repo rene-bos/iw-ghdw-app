@@ -35,15 +35,16 @@ final class InfoController extends AbstractController
 
     private function getUptime(): string
     {
-        $str = @file_get_contents('/proc/uptime');
-        $num = floatval($str);
-        $secs = $num % 60;
-        $num = (int)($num / 60);
-        $mins = $num % 60;
-        $num = (int)($num / 60);
-        $hours = $num % 24;
-        $num = (int)($num / 24);
-        $days = $num;
+        $timestamp = shell_exec('stat -c %Y /proc/1/cmdline');
+        $remainder = time() - floatval($timestamp);
+
+        $secs = $remainder % 60;
+        $remainder = (int)($remainder / 60);
+        $mins = $remainder % 60;
+        $remainder = (int)($remainder / 60);
+        $hours = $remainder % 24;
+        $remainder = (int)($remainder / 24);
+        $days = $remainder;
 
         return sprintf(
             '%dd, %dh, %dm, %ds',
