@@ -16,9 +16,17 @@ final class InfoController extends AbstractController
     {
         return new Response(
             sprintf(
-                '<html><body>Host: %s<br>Uptime: %s<br>Version: {{VERSION}}</body></html>',
+                <<<HTML
+                    <html><body>
+                        Host: %s<br>
+                        Uptime: %s<br>
+                        PHP version: %s<br>
+                        Application version: {{VERSION}}
+                    </body></html>
+                HTML,
                 gethostname(),
                 $this->getUptime(),
+                phpversion(),
             )
         );
     }
