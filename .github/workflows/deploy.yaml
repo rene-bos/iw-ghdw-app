@@ -21,15 +21,7 @@ jobs:
       contents: read
       id-token: write
     runs-on: ubuntu-latest
-    environment:
-      name: reviewapps
     steps:
-      - name: Debug
-        run: |
-          echo "Var: ${{ github.ref_name  }}"
-          echo "Env: ${{ env.VERSION_NAME }}"
-          echo "Direct env: ${VERSION_NAME}"
-          echo "Modified env: ${VERSION_NAME,,}"
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -60,7 +52,7 @@ jobs:
     needs:
       - buildImages
     environment:
-      name: reviewapps
+      name: reviewapps-${{ env.VERSION_NAME }}
       url: http://${{ env.VERSION_NAME }}.review.iw-ghdw-app.rpsoft.nl/info
     steps:
       - uses: actions/checkout@v3
