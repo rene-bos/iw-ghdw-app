@@ -42,7 +42,15 @@ jobs:
         run: az acr build --image ${{ env.CONTAINER_NAME_WEB }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./infrastructure/docker/web/Dockerfile ./
       - name: Build and push image to ACR (${{ env.CONTAINER_NAME_PHP }})
         run: az acr build --image ${{ env.CONTAINER_NAME_PHP }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ./infrastructure/docker/php/Dockerfile ./
-  
+
+  set_deploy_environment:
+    outputs:
+      deploy_environment: ${{ steps.set-deploy-environment.outputs.deploy_environment }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: set-deploy-environment
+        run: echo "::set-output name=deploy_environment::${{ env.VERSION_NAME }}"
+
   deploy:
     permissions:
       actions: read
@@ -51,8 +59,9 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - buildImages
+      - set_deploy_environment
     environment:
-      name: reviewapps-${{ env.VERSION_NAME }}
+      name: reviewapps-${{ needs.set_deploy_environment.outputs.deploy_environment }}
       url: http://${{ env.VERSION_NAME }}.review.iw-ghdw-app.rpsoft.nl/info
     steps:
       - uses: actions/checkout@v3
