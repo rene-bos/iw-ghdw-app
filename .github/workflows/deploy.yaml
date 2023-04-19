@@ -53,6 +53,7 @@ jobs:
         run: echo "::set-output name=deploy_environment::${{ env.VERSION_NAME }}"
 
   deploy:
+    name: Deploy
     permissions:
       actions: read
       contents: read
