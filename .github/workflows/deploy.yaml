@@ -85,4 +85,4 @@ jobs:
           resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
           use-kubelogin: "true"
       - name: Deploy application
-        run: helm upgrade --wait -i  --create-namespace --namespace reviewapps -f ${{ env.CHART_OVERRIDE_PATH }} --set ${{ env.CHART_OVERRIDES }} ${{ needs.determine-deploy-environment.outputs.deploy_environment }} ${{ env.CHART_PATH }}
+        run: helm upgrade --wait -i  --create-namespace --namespace reviewapps -f ${{ env.CHART_OVERRIDE_PATH }} --set ${{ env.CHART_OVERRIDES }} `echo "${{ needs.determine-deploy-environment.outputs.deploy_environment }}" | tr '[:upper:]' '[:lower:]'` ${{ env.CHART_PATH }}
