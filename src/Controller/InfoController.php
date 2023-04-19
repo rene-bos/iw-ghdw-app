@@ -16,8 +16,9 @@ final class InfoController extends AbstractController
     {
         return new Response(
             sprintf(
-                '<html><body>Host: %s<br>Version: {{VERSION}}</body></html>',
+                '<html><body>Host: %s<br>Uptime: %s<br>Version: {{VERSION}}</body></html>',
                 gethostname(),
+                $this->getUptime(),
             )
         );
     }
@@ -29,6 +30,28 @@ final class InfoController extends AbstractController
             sprintf(
                 '<html><body>{{VERSION}}</body></html>',
             )
+        );
+    }
+
+    private function getUptime(): string
+    {
+        $timestamp = shell_exec('stat -c %Y /proc/1/cmdline');
+        $remainder = time() - floatval($timestamp);
+
+        $secs = $remainder % 60;
+        $remainder = (int)($remainder / 60);
+        $mins = $remainder % 60;
+        $remainder = (int)($remainder / 60);
+        $hours = $remainder % 24;
+        $remainder = (int)($remainder / 24);
+        $days = $remainder;
+
+        return sprintf(
+            '%dd, %dh, %dm, %ds',
+            $days,
+            $hours,
+            $mins,
+            $secs,
         );
     }
 }
