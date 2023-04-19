@@ -21,7 +21,7 @@ final class InfoController extends AbstractController
                         Host: %s<br>
                         Uptime: %s<br>
                         PHP version: %s<br>
-                        Version: {{VERSION}}
+                        Application version: {{VERSION}}
                     </body></html>
                 HTML,
                 gethostname(),
