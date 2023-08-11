@@ -77,7 +77,7 @@ jobs:
   # This job may be removed when we have at least one real check.
   successful-dummy:
     name: Successful dummy
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Step which always succeeds
         run: echo "I am a dummy step which always succeeds"
