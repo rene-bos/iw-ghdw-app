@@ -1,4 +1,4 @@
-FROM nginx:1.21.4-alpine
+FROM nginx:1.25.1-alpine
 
 COPY ./infrastructure/docker/web/default.conf.template /etc/nginx/templates/
 

@@ -12,13 +12,13 @@ on:
 jobs:
   update-baseline:
     name: Update baseline
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       -  name: Setup PHP
-         uses: shivammathur/setup-php@1fdc5e773bb54b5aa541c73679d6e9acc692d0cd # 2.25.0
+         uses: shivammathur/setup-php@72ae4ccbe57f82bbe08411e84e2130bd4ba1c10f # 2.25.5
          with:
            php-version: 8.1
 
@@ -30,7 +30,7 @@ jobs:
 
       - name: Create pull request if baseline has been changes
         id: create-pull-request
-        uses: peter-evans/create-pull-request@5b4a9f6a9e2af26e5f02351490b90d01eb8ec1e5 # v5.0.0
+        uses: peter-evans/create-pull-request@153407881ec5c347639a548ade7d8ad1d6740e38 # v5.0.2
         with:
           add-paths: ./phpstan-baseline.neon
           commit-message: Automated update of PHPStan baseline

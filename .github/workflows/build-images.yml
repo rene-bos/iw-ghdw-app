@@ -65,7 +65,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta-php
-        uses: docker/metadata-action@v4.4.0
+        uses: docker/metadata-action@v4.6.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           flavor: |
@@ -80,7 +80,7 @@ jobs:
             - org.opencontainers.image.title=${{ env.IMAGE_TITLE }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v4.0.0
+        uses: docker/build-push-action@v4.1.1
         with:
           file: ./infrastructure/docker/php/Dockerfile
           context: .
@@ -114,7 +114,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta-web
-        uses: docker/metadata-action@v4.4.0
+        uses: docker/metadata-action@v4.6.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           flavor: |
@@ -129,7 +129,7 @@ jobs:
             - org.opencontainers.image.title=${{ env.IMAGE_TITLE }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v4.0.0
+        uses: docker/build-push-action@v4.1.1
         with:
           file: ./infrastructure/docker/web/Dockerfile
           context: .
